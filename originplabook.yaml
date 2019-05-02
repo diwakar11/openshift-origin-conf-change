@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+    - lineinfile:
+        path: /etc/origin/node/node-config.yaml
+        regexp: '^masterKubeConfig:'
+        line: "masterKubeConfig: system:node:{{ ansible_fqdn | lower }}.kubeconfig"
+    - name: restart origin-node service
+      service:
+        name: origin-node
+        state: restarted
+
